@@ -13,6 +13,9 @@ void carLeaves(deque<Car>&);
 void carJoins(deque<Car>&);
 void printAll(deque<Car>);
 
+/************************************************
+ * Function: Main
+ ************************************************/
 int main()
 {
     srand(time(0)); //seed random
@@ -33,6 +36,13 @@ int main()
     }
 }
 
+/************************************************
+ * Function: Handles the processes for one "Time"
+ * loop of the deque
+ *
+ * Parameters: &myDeque, as it calls other functions
+ * that push/pop Car objects from the deque
+ ************************************************/
 void runDay(deque<Car>&myDeque)
 {
     int rand1 = (rand()%100)+1; //random variable deciding addition/payment
@@ -50,17 +60,36 @@ void runDay(deque<Car>&myDeque)
     }
 }
 
+/************************************************
+ * Function: Simply removes the frontmost car in 
+ * line
+ * Parameters: &myDeque, as a modification to the 
+ * original deque is made.
+ ************************************************/
 void carLeaves(deque<Car>&myDeque)
 {
     myDeque.pop_front();
 }
 
+/************************************************
+ * Function: Adds a new car to the deque
+ *
+ * Parameters: &myDeque, as a modification to the 
+ * original deque is made.
+ ************************************************/
 void carJoins(deque<Car>&myDeque)
 {
     Car *temp = new Car(); //use default constructor 
     myDeque.push_back(*temp); 
 }
 
+/************************************************
+ * Function: Adds a new car to the deque
+ *
+ * Parameters: myDeque, passed by value, as no 
+ * modificaiton to the original deque needs to be
+ * made, helps guard against accidental changes. 
+ ************************************************/
 void printAll(deque<Car>myDeque)
 {
     for(int i = 0; i != myDeque.size(); i++)
