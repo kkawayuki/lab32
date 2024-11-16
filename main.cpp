@@ -8,11 +8,10 @@
 using namespace std;
 
 //function prototypes
-string runDay(deque<Car>&);
+void runDay(deque<Car>&);
 void carLeaves(deque<Car>&);
 void carJoins(deque<Car>&);
 void printAll(deque<Car>);
-
 
 int main()
 {
@@ -26,26 +25,28 @@ int main()
 
     for(int i = 1; myDeque.size() != 0; i++)
     {
-        cout << "Time: " << i << " " << runDay(myDeque);
-        if( myDeque.size() != 0)
-            myDeque[myDeque.size()-1].print();
+        cout << "Time: " << i << " Operation: ";
+        runDay(myDeque); 
+
         cout << "Queue:\n"; 
         printAll(myDeque);
     }
 }
 
-string runDay(deque<Car>&myDeque)
+void runDay(deque<Car>&myDeque)
 {
     int rand1 = (rand()%100)+1; //random variable deciding addition/payment
     if(rand1 <= 55)
     {
+        cout << "Car paid: ";
+        myDeque[0].print(); 
         carLeaves(myDeque);
-        return("Car paid: ");
     }
     else //the other 45%
     {
+        cout << "Joined lane: ";
         carJoins(myDeque);
-        return("Joined Lane: ");
+        myDeque[myDeque.size()-1].print(); //print the last car to enter deque
     }
 }
 
@@ -66,6 +67,10 @@ void printAll(deque<Car>myDeque)
     {
         cout << '\t'; //formatting
         myDeque[i].print();
+    }
+    if(myDeque.size() == 0) //handles case of empty deque
+    {
+        cout << "\tEmpty";
     }
     cout << "\n";
 }
