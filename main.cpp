@@ -27,7 +27,8 @@ int main()
     for(int i = 1; myDeque.size() != 0; i++)
     {
         cout << "Time: " << i << " " << runDay(myDeque);
-        //myDeque[myDeque.size()].print();
+        if( myDeque.size() != 0)
+            myDeque[myDeque.size()-1].print();
         cout << "Queue:\n"; 
         printAll(myDeque);
     }
@@ -39,12 +40,12 @@ string runDay(deque<Car>&myDeque)
     if(rand1 <= 55)
     {
         carLeaves(myDeque);
-        return("Joined lane: ");
+        return("Car paid: ");
     }
     else //the other 45%
     {
         carJoins(myDeque);
-        return("Car paid: ");
+        return("Joined Lane: ");
     }
 }
 
@@ -66,5 +67,5 @@ void printAll(deque<Car>myDeque)
         cout << '\t'; //formatting
         myDeque[i].print();
     }
-    cout << "\n\n";
+    cout << "\n";
 }
