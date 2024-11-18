@@ -41,7 +41,7 @@ int main()
     printAll(lanes, true);
 
     // 20 runs
-    const int days = 3;
+    const int days = 20;
     for (int i = 0; i < days; i++)
     {
         cout << "Time: " << i + 1 << '\n'; // +1 for clarity on user side
@@ -66,7 +66,7 @@ void runDay(deque<Car> *lanes)
     {
         int rand1 = (rand() % 100) + 1; // random variable deciding various operations
 
-        if (rand1 <= PAY) // pay case
+        if (rand1 <= PAY && !lanes[i].empty()) // pay case
         {
             cout << "Lane: " << i + 1 << " Paid: ";
             lanes[i].front().print();
