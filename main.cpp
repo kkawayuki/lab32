@@ -2,6 +2,7 @@
 // IDE used: Visual Studio Code
 #include <iostream>
 #include <deque> //std::deque
+#include <array> //std::array
 #include "Car.h" //user-defined class
 #include <random>
 #include <time.h>
@@ -19,20 +20,24 @@ void printAll(deque<Car>);
 int main()
 {
     srand(time(0)); //seed random
-    const int SIZE = 2;
-    deque<Car> myDeque (SIZE); //declare dequeue with intial size 2
+    const int SIZE = 2; 
+    deque<Car> tollBooth (SIZE); //declare dequeue with intial size 2
+
+    //there are now 4 toll booths (dequeues)
+    //add more lanes
+    deque<Car>lanes[4]; 
 
     //cout initial
     cout << "Initial queue:\n"; 
-    printAll(myDeque);
+    printAll(tollBooth);
 
-    for(int i = 1; myDeque.size() != 0; i++)
+    for(int i = 1; tollBooth.size() != 0; i++)
     {
         cout << "Time: " << i << " Operation: ";
-        runDay(myDeque); 
+        runDay(tollBooth); 
 
         cout << "Queue:\n"; 
-        printAll(myDeque);
+        printAll(tollBooth);
     }
 }
 
@@ -40,23 +45,23 @@ int main()
  * Function: Handles the processes for one "Time"
  * loop of the deque
  *
- * Parameters: &myDeque, as it calls other functions
+ * Parameters: &tollBooth, as it calls other functions
  * that push/pop Car objects from the deque
  ************************************************/
-void runDay(deque<Car>&myDeque)
+void runDay(deque<Car>&tollBooth)
 {
     int rand1 = (rand()%100)+1; //random variable deciding addition/payment
     if(rand1 <= 55)
     {
         cout << "Car paid: ";
-        myDeque[0].print(); 
-        carLeaves(myDeque);
+        tollBooth[0].print(); 
+        carLeaves(tollBooth);
     }
     else //the other 45%
     {
         cout << "Joined lane: ";
-        carJoins(myDeque);
-        myDeque[myDeque.size()-1].print(); //print the last car to enter deque
+        carJoins(tollBooth);
+        tollBooth[tollBooth.size()-1].print(); //print the last car to enter deque
 
 
         
@@ -66,41 +71,41 @@ void runDay(deque<Car>&myDeque)
 /************************************************
  * Function: Simply removes the frontmost car in 
  * line
- * Parameters: &myDeque, as a modification to the 
+ * Parameters: &tollBooth, as a modification to the 
  * original deque is made.
  ************************************************/
-void carLeaves(deque<Car>&myDeque)
+void carLeaves(deque<Car>&tollBooth)
 {
-    myDeque.pop_front();
+    tollBooth.pop_front();
 }
 
 /************************************************
  * Function: Adds a new car to the deque
  *
- * Parameters: &myDeque, as a modification to the 
+ * Parameters: &tollBooth, as a modification to the 
  * original deque is made.
  ************************************************/
-void carJoins(deque<Car>&myDeque)
+void carJoins(deque<Car>&tollBooth)
 {
     Car *temp = new Car(); //use default constructor 
-    myDeque.push_back(*temp); 
+    tollBooth.push_back(*temp); 
 }
 
 /************************************************
  * Function: Adds a new car to the deque
  *
- * Parameters: myDeque, passed by value, as no 
+ * Parameters: tollBooth, passed by value, as no 
  * modificaiton to the original deque needs to be
  * made, helps guard against accidental changes. 
  ************************************************/
-void printAll(deque<Car>myDeque)
+void printAll(deque<Car>tollBooth)
 {
-    for(int i = 0; i != myDeque.size(); i++)
+    for(int i = 0; i != tollBooth.size(); i++)
     {
         cout << '\t'; //formatting
-        myDeque[i].print();
+        tollBooth[i].print();
     }
-    if(myDeque.size() == 0) //handles case of empty deque
+    if(tollBooth.size() == 0) //handles case of empty deque
     {
         cout << "\tEmpty";
     }
