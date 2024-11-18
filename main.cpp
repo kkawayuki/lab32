@@ -9,7 +9,7 @@
 using namespace std;
 
 // function prototypes
-void runDay(deque<Car> &);
+void runDay(deque<Car>* lanes);
 void carLeaves(deque<Car> &);
 void carJoins(deque<Car> &);
 void printAll(deque<Car>);
@@ -41,12 +41,13 @@ int main()
         printAll(lanes[i]);
     }
 
+    //20 runs 
     for (int i = 0; i < 20; i++)
     {
-        cout << "Time: " << i + 1 << " Operation: "; //+1 for clarity on user side
-        runDay(tollBooth);
+        cout << "Time: " << i + 1 << " Operation: "; // +1 for clarity on user side
+        runDay(lanes);
 
-        
+
         cout << "Queue:\n";
         for (int i = 0; i < LANES; i++)
         {
@@ -63,8 +64,10 @@ int main()
  * Parameters: &tollBooth, as it calls other functions
  * that push/pop Car objects from the deque
  ************************************************/
-void runDay(deque<Car> &tollBooth)
+void runDay(deque<Car>* lanes)
 {
+    //logic for running each of the cars 
+
     int rand1 = (rand() % 100) + 1; // random variable deciding addition/payment
     if (rand1 <= 55)
     {
