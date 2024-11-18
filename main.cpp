@@ -10,9 +10,10 @@ using namespace std;
 
 // function prototypes
 void runDay(deque<Car> *lanes);
-void carLeaves(deque<Car> &);
-void carJoins(deque<Car> &);
-void printAll(deque<Car>);
+void carLeaves(deque<Car> *lanes, int arrIndex);
+void carJoins(deque<Car> *lanes, int arrIndex);
+void printAll(deque<Car> *lanes);
+void carShifts(deque<Car> *lanes, int arrIndex);
 
 // global variables
 const int SIZE = 2, LANES = 4, PAY = 46, JOIN = 39, SHIFT = 15; // includes constants for probabilities
@@ -37,14 +38,12 @@ int main()
 
     // updated print implementation
     cout << "Initial queue:\n";
-    for (int i = 0; i < LANES; i++)
-    {
-        cout << "Lane " << i + 1 << ":\n";
-        printAll(lanes[i]);
-    }
+    printAll(lanes);
+    
 
     // 20 runs
-    for (int i = 0; i < 20; i++)
+    int days = 2;
+    for (int i = 0; i < days; i++)
     {
         cout << "Time: " << i + 1 << " Operation: "; // +1 for clarity on user side
         runDay(lanes);
@@ -53,7 +52,7 @@ int main()
         for (int i = 0; i < LANES; i++)
         {
             cout << "Lane " << i + 1 << ":\n";
-            printAll(lanes[i]);
+            printAll(lanes);
         }
     }
 }
@@ -72,21 +71,21 @@ void runDay(deque<Car> *lanes)
     {
         int rand1 = (rand() % 100) + 1; // random variable deciding various operations
 
-        if (rand1 <= PAY) //pay case
+        if (rand1 <= PAY) // pay case
         {
             cout << "Car paid: ";
-            lanes[i].front().print(); 
+            lanes[i].front().print();
             carLeaves(lanes, i);
         }
         else if (rand1 <= PAY + JOIN) // join
         {
             cout << "Joined lane: ";
             carJoins(lanes, i);
-            lanes[i].back().print(); 
+            lanes[i].back().print();
         }
-        else if (rand1 <= PAY + JOIN + SHIFT) //shift lanes (could also use an else statement)
+        else if (rand1 <= PAY + JOIN + SHIFT) // shift lanes (could also use an else statement)
         {
-            carShifts(lanes, i); 
+            carShifts(lanes, i);
         }
     }
 }
@@ -99,7 +98,7 @@ void runDay(deque<Car> *lanes)
  ************************************************/
 void carLeaves(deque<Car> *lanes, int arrIndex)
 {
-    lanes[arrIndex].pop_front(); 
+    lanes[arrIndex].pop_front();
 }
 
 /************************************************
@@ -111,7 +110,7 @@ void carLeaves(deque<Car> *lanes, int arrIndex)
 void carJoins(deque<Car> *lanes, int arrIndex)
 {
     Car *temp = new Car();
-    lanes[arrIndex].push_front(*temp); 
+    lanes[arrIndex].push_front(*temp);
 }
 
 /************************************************
@@ -124,22 +123,26 @@ void carJoins(deque<Car> *lanes, int arrIndex)
 void printAll(deque<Car> *lanes)
 {
 
-    for(int i = 0; i < LANES; i++) //for each array index
+    for (int i = 0; i < LANES; i++) // for each array index
     {
-        for(int j = 0; j < lanes[i].size()-1; j++) //for each element
+        cout << "Lane " << i + 1 << ":\n";
+        if (lanes[i].empty()) // handles case of empty deque
         {
-            cout << '\t'; // formatting
-            lanes[i][j].print(); 
+            cout << "\tEmpty";
         }
-    }
-    if (lanes[i].size() == 0) // handles case of empty deque
-    {
-        cout << "\tEmpty";
+        else
+        {
+            for (int j = 0; j < lanes[i].size(); j++) // for each element
+            {
+                cout << '\t'; // formatting
+                lanes[i][j].print();
+            }
+        }
     }
     cout << "\n";
 }
 
 void carShifts(deque<Car> *lanes, int arrIndex)
 {
-    //logic for car shifting lanes
+    // logic for car shifting lanes
 }
