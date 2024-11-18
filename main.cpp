@@ -19,37 +19,41 @@ void printAll(deque<Car>);
  ************************************************/
 int main()
 {
-    srand(time(0)); // seed random
-    const int SIZE = 2, LANES = 4;
-    
+    srand(time(0));                                                 // seed random
+    const int SIZE = 2, LANES = 4, PAY = 46, JOIN = 39, SHIFT = 15; // includes constants for probabilities
+
     // add more lanes
     deque<Car> lanes[LANES];
-    for (int i = 0; i < LANES; i++) //populate 
+    for (int i = 0; i < LANES; i++) // populate
     {
-        for (int i = 0; i < SIZE; i++)
+        for (int j = 0; j < SIZE; j++)
         {
-            Car *temp = new Car; 
+            Car *temp = new Car;
             lanes[i].push_back(*temp);
         }
     }
 
-    //updated print implementation
+    // updated print implementation
     cout << "Initial queue:\n";
-    for(int i = 0; i < LANES; i++)
+    for (int i = 0; i < LANES; i++)
     {
-        cout << "Lane " << i+1 << ":\n"; 
+        cout << "Lane " << i + 1 << ":\n";
         printAll(lanes[i]);
     }
-    
 
-    // for (int i = 1; tollBooth.size() != 0; i++)
-    // {
-    //     cout << "Time: " << i << " Operation: ";
-    //     runDay(tollBooth);
+    for (int i = 0; i < 20; i++)
+    {
+        cout << "Time: " << i + 1 << " Operation: "; //+1 for clarity on user side
+        runDay(tollBooth);
 
-    //     cout << "Queue:\n";
-    //     printAll(tollBooth);
-    // }
+        
+        cout << "Queue:\n";
+        for (int i = 0; i < LANES; i++)
+        {
+            cout << "Lane " << i + 1 << ":\n";
+            printAll(lanes[i]);
+        }
+    }
 }
 
 /************************************************
