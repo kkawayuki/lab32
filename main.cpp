@@ -57,6 +57,9 @@ void runDay(deque<Car>&myDeque)
         cout << "Joined lane: ";
         carJoins(myDeque);
         myDeque[myDeque.size()-1].print(); //print the last car to enter deque
+
+
+        
     }
 }
 
