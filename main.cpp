@@ -1,4 +1,4 @@
-// COMSC-210 | lab 32 | Kent Kawashima
+// COMSC-210 | lab 33 | Kent Kawashima
 // IDE used: Visual Studio Code
 #include <iostream>
 #include <deque> //std::deque
@@ -12,7 +12,7 @@ using namespace std;
 void runDay(deque<Car> *lanes);
 void carLeaves(deque<Car> *lanes, int arrIndex);
 void carJoins(deque<Car> *lanes, int arrIndex);
-void printAll(deque<Car> *lanes);
+void printAll(deque<Car> *lanes, bool);
 void carShifts(deque<Car> *lanes, int arrIndex);
 
 // global variables
@@ -38,22 +38,17 @@ int main()
 
     // updated print implementation
     cout << "Initial queue:\n";
-    printAll(lanes);
-    
+    printAll(lanes, true);
 
     // 20 runs
-    int days = 2;
+    const int days = 3;
     for (int i = 0; i < days; i++)
     {
-        cout << "Time: " << i + 1 << " Operation: "; // +1 for clarity on user side
+        cout << "Time: " << i + 1 << '\n'; // +1 for clarity on user side
         runDay(lanes);
 
-        cout << "Queue:\n";
-        for (int i = 0; i < LANES; i++)
-        {
-            cout << "Lane " << i + 1 << ":\n";
-            printAll(lanes);
-        }
+        // queue at end
+        printAll(lanes, false);
     }
 }
 
@@ -73,28 +68,33 @@ void runDay(deque<Car> *lanes)
 
         if (rand1 <= PAY) // pay case
         {
-            cout << "Car paid: ";
+            cout << "Lane: " << i + 1 << " Paid: ";
             lanes[i].front().print();
             carLeaves(lanes, i);
         }
         else if (rand1 <= PAY + JOIN) // join
         {
-            cout << "Joined lane: ";
+            cout << "Lane: " << i + 1 << " Joined: ";
             carJoins(lanes, i);
             lanes[i].back().print();
         }
         else if (rand1 <= PAY + JOIN + SHIFT) // shift lanes (could also use an else statement)
         {
+            cout << "Lane: " << i + 1 << " Switched: ";
+            lanes[i].back().print(); // because rear car switches
             carShifts(lanes, i);
         }
     }
 }
 
 /************************************************
- * Function: Simply removes the frontmost car in
- * line
- * Parameters: &tollBooth, as a modification to the
- * original deque is made.
+ * Function: Simulates a car leaving (having paid)
+ * from the line
+ *
+ * Parameters:
+ * *lanes, pointer to the array of lanes
+ * arrIndex, the variable corresponding to the
+ * specific array index to operate on
  ************************************************/
 void carLeaves(deque<Car> *lanes, int arrIndex)
 {
@@ -102,10 +102,13 @@ void carLeaves(deque<Car> *lanes, int arrIndex)
 }
 
 /************************************************
- * Function: Adds a new car to the deque
+ * Function: Adds a new car to the array of
+ * deques
  *
- * Parameters: &tollBooth, as a modification to the
- * original deque is made.
+ * Parameters:
+ * *lanes, pointer to the array of lanes
+ * arrIndex, the variable corresponding to the
+ * specific array index to operate on
  ************************************************/
 void carJoins(deque<Car> *lanes, int arrIndex)
 {
@@ -114,18 +117,21 @@ void carJoins(deque<Car> *lanes, int arrIndex)
 }
 
 /************************************************
- * Function: Adds a new car to the deque
+ * Function: Prints out all the values for
+ * each lane in the array
  *
- * Parameters: tollBooth, passed by value, as no
- * modificaiton to the original deque needs to be
- * made, helps guard against accidental changes.
+ * Parameters:
+ * *lanes, pointer to the array of lanes
  ************************************************/
-void printAll(deque<Car> *lanes)
+void printAll(deque<Car> *lanes, bool first)
 {
 
     for (int i = 0; i < LANES; i++) // for each array index
     {
-        cout << "Lane " << i + 1 << ":\n";
+        if (first)
+            cout << "Lane " << i + 1 << ":\n";
+        else
+            cout << "Lane " << i + 1 << " Queue:\n";
         if (lanes[i].empty()) // handles case of empty deque
         {
             cout << "\tEmpty";
@@ -142,7 +148,28 @@ void printAll(deque<Car> *lanes)
     cout << "\n";
 }
 
+/************************************************
+ * Function: Move a car from the back of the
+ * current line to a random line
+ *
+ * Parameters:
+ * *lanes, pointer to the array of lanes
+ * arrIndex, the variable corresponding to the
+ * specific array index to operate on
+ ************************************************/
 void carShifts(deque<Car> *lanes, int arrIndex)
 {
-    // logic for car shifting lanes
+    if (!lanes[arrIndex].empty())
+    {
+        // logic for car shifting lanes
+        Car temp = lanes[arrIndex].back(); // make copy
+        lanes[arrIndex].pop_back();        // remove actual back
+
+        int r = rand() % 4;
+        while (r == arrIndex)
+        {
+            r = rand() % 4; // generate random index
+        }
+        lanes[r].push_back(temp); // add to randomly selected array index
+    }
 }
